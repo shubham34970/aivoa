@@ -1,0 +1,26 @@
+CUSTOMER COMPLAINT INTAKE REPORT
+Document Ref: EXT-CMP-2024-0518
+Date of Report: 2024-05-18
+
+Complainant Information:
+Customer Name: Apex Global Formulations Inc. (Solid Oral Dosage Unit)
+Complaint Source: Formulation Client (B2B API)
+Contact Person: Dr. Rajiv Menon, VP Quality Operations
+Email: r.menon@apexformulations.com
+
+Product Identification:
+Product Name: Metformin Hydrochloride API
+Product Grade / Specification: Ph. Eur / USP Grade Micronized Powder
+Batch Number: MET-API-884
+Manufacturing Date: 2024-02-02
+Expiry Date: 2028-02-01
+Quantity Affected: 500 kg (20 Fiber Drums with double polyethylene liners)
+
+Detailed Complaint Narrative:
+During incoming raw material QC testing for Metformin HCl API Batch MET-API-884, our analytical chemistry team observed an off-white to pale yellowish discoloration across 4 out of 20 drums sampled. The monograph specification requires a "white or almost white crystalline powder". Furthermore, preliminary HPLC analysis of the discolored sample indicates an elevated Related Substance A impurity level of 0.18% (exceeding our release limit of NMT 0.05%). 
+
+Initial Assessment:
+We have rejected the shipment of 500 kg and issued Quarantine Notice QN-2024-411. This is categorized as a Critical quality defect impacting downstream tablet compression and patient safety. Immediate root cause investigation and replacement shipment are required.
+
+Defective Samples:
+Retained 2 x 100g sample bottles available for courier pickup to your QC testing lab.

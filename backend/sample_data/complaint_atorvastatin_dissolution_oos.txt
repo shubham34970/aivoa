@@ -1,0 +1,21 @@
+STABILITY TESTING DEFECT NOTIFICATION
+Date: 2024-07-05
+From: BioQuality Analytical Testing Laboratories Inc.
+Client / Customer: Walgreens National Distribution Center & Formulation Quality
+
+Product Details:
+Product Name: Atorvastatin Calcium 20mg Tablets
+Product Strength / Grade: USP Film-Coated Oral Tablets (FDF)
+Batch Number: ATV-2024-301
+Mfg Date: 2024-01-20
+Exp Date: 2026-01-19
+Quantity Affected: 1,200 Commercial Bottles (90 Tablets per Bottle)
+Complaint Type: Chemical / Dissolution Out of Specification (OOS)
+
+Defect Description:
+During 6-month accelerated stability testing (40°C / 75% RH), 45-minute dissolution testing in pH 6.8 phosphate buffer resulted in an average Q value of 68.4% (monograph specification requires Q >= 80% at 45 minutes). Stage 2 (S2) testing with 6 additional units confirmed dissolution failure with mean 70.1%. Suspected excessive lubricant blending time causing hydrophobic tablet granulation. 
+
+Initial QA Classification:
+Severity: Major
+Priority: High
+Status: Quarantine Active
