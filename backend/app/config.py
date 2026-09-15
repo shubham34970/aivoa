@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list[str] = ["*"]
     
     class Config:
-        env_file = ".env"
+        env_file = (".env", "../.env")
         extra = "allow"
 
 settings = Settings()
