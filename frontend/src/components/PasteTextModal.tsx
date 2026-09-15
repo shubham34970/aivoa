@@ -6,7 +6,7 @@ import {
   setExtractionError, setNotification 
 } from '../store/complaintSlice'
 import { addMessage, ChatMessage } from '../store/copilotSlice'
-import { getApiUrl } from '../config/api'
+import { getApiUrl, safeFetchJson } from '../config/api'
 
 interface PasteTextModalProps {
   isOpen: boolean
@@ -49,13 +49,7 @@ export const PasteTextModal: React.FC<PasteTextModalProps> = ({ isOpen, onClose 
       })
 
       clearInterval(interval)
-
-      if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.detail || 'Extraction error')
-      }
-
-      const data = await res.json()
+      const data = await safeFetchJson(res)
       dispatch(setExtractionSuccess(data))
 
       const completedMsg: ChatMessage = {

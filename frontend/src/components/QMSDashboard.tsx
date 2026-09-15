@@ -5,7 +5,7 @@ import {
 } from 'lucide-react'
 import { useAppDispatch } from '../store'
 import { setNotification } from '../store/complaintSlice'
-import { getApiUrl } from '../config/api'
+import { getApiUrl, safeFetchJson } from '../config/api'
 
 export const QMSDashboard: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -30,8 +30,10 @@ export const QMSDashboard: React.FC = () => {
         fetch(getApiUrl('/api/analytics'))
       ])
 
-      if (compRes.ok) setComplaints(await compRes.json())
-      if (anaRes.ok) setAnalytics(await anaRes.json())
+      const compData = await safeFetchJson(compRes)
+      const anaData = await safeFetchJson(anaRes)
+      if (Array.isArray(compData)) setComplaints(compData)
+      if (anaData && anaData.total_complaints !== undefined) setAnalytics(anaData)
     } catch (err) {
       console.error('Dashboard fetch error:', err)
     } finally {
@@ -48,12 +50,11 @@ export const QMSDashboard: React.FC = () => {
       const res = await fetch(getApiUrl(`/api/complaints/${id}/status?status=${encodeURIComponent(newStatus)}`), {
         method: 'PATCH'
       })
-      if (res.ok) {
-        dispatch(setNotification({ message: `Status updated to ${newStatus}`, type: 'success' }))
-        fetchData()
-      }
-    } catch (err) {
-      dispatch(setNotification({ message: 'Error updating status', type: 'error' }))
+      await safeFetchJson(res)
+      dispatch(setNotification({ message: `Status updated to ${newStatus}`, type: 'success' }))
+      fetchData()
+    } catch (err: any) {
+      dispatch(setNotification({ message: err.message || 'Error updating status', type: 'error' }))
     }
   }
 
@@ -247,8 +248,13 @@ export const QMSDashboard: React.FC = () => {
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={async () => {
-                          const res = await fetch(getApiUrl(`/api/complaints/${c.id}`))
-                          if (res.ok) setSelectedComplaint(await res.json())
+                          try {
+                            const res = await fetch(getApiUrl(`/api/complaints/${c.id}`))
+                            const data = await safeFetchJson(res)
+                            setSelectedComplaint(data)
+                          } catch (err: any) {
+                            dispatch(setNotification({ message: err.message || 'Failed to load complaint', type: 'error' }))
+                          }
                         }}
                         className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 transition-all inline-flex items-center gap-1 text-xs font-semibold"
                         title="View Full QA Audit Record"

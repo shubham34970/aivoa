@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store'
 import { setFormField, resetForm, setNotification, FormData } from '../store/complaintSlice'
 import { generateComplaintAuditPDF } from './AuditReportExport'
 import { DynamicDateField } from './DynamicDateField'
-import { getApiUrl } from '../config/api'
+import { getApiUrl, safeFetchJson } from '../config/api'
 
 export const ComplaintForm: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -68,11 +68,7 @@ export const ComplaintForm: React.FC = () => {
         body: JSON.stringify(payload)
       })
 
-      if (!res.ok) {
-        throw new Error('Failed to save complaint to database.')
-      }
-
-      const data = await res.json()
+      const data = await safeFetchJson(res)
       
       // Trigger celebration confetti
       confetti({

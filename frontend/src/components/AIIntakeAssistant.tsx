@@ -9,7 +9,7 @@ import {
   setExtractionError, setNotification 
 } from '../store/complaintSlice'
 import { addMessage, setIsTyping, ChatMessage } from '../store/copilotSlice'
-import { getApiUrl } from '../config/api'
+import { getApiUrl, safeFetchJson } from '../config/api'
 
 interface AIIntakeAssistantProps {
   onOpenPasteModal: () => void
@@ -39,7 +39,7 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
   useEffect(() => {
     // Fetch preloaded samples from backend
     fetch(getApiUrl('/api/samples'))
-      .then((res) => res.json())
+      .then((res) => safeFetchJson(res))
       .then((data) => setSamples(data))
       .catch((err) => console.log('Samples error:', err))
   }, [])
@@ -72,13 +72,7 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
       })
 
       clearInterval(interval)
-
-      if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.detail || 'Failed to extract data from document.')
-      }
-
-      const data = await res.json()
+      const data = await safeFetchJson(res)
       dispatch(setExtractionSuccess(data))
       
       // Add completion note to copilot chat
@@ -121,13 +115,7 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
       })
 
       clearInterval(interval)
-
-      if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.detail || 'Extraction error')
-      }
-
-      const data = await res.json()
+      const data = await safeFetchJson(res)
       dispatch(setExtractionSuccess(data))
 
       const completedMsg: ChatMessage = {
@@ -144,8 +132,8 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
     }
   }
 
-  const handleSendMessage = async (queryText?: string) => {
-    const textToSend = queryText || inputQuery
+  const handleSendMessage = async (queryOverride?: string) => {
+    const textToSend = queryOverride || inputQuery
     if (!textToSend.trim()) return
 
     const userMsg: ChatMessage = {
@@ -170,8 +158,7 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
         })
       })
 
-      if (!res.ok) throw new Error('Copilot response error')
-      const data = await res.json()
+      const data = await safeFetchJson(res)
 
       const botMsg: ChatMessage = {
         id: `bot-${Date.now()}`,
@@ -180,11 +167,11 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
       dispatch(addMessage(botMsg))
-    } catch (err) {
+    } catch (err: any) {
       const errorMsg: ChatMessage = {
         id: `bot-err-${Date.now()}`,
         role: 'assistant',
-        content: 'I encountered an error analyzing your request. Please ensure the backend server is running.',
+        content: `I encountered an error: ${err.message || 'Please ensure the backend server is running.'}`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
       dispatch(addMessage(errorMsg))
