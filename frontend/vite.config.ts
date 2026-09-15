@@ -11,8 +11,9 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000',
-        changeOrigin: true
+        target: 'https://aivoa-rbn6.vercel.app',
+        changeOrigin: true,
+        secure: true
       }
     }
   }

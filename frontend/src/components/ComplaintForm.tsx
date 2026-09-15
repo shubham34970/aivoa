@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store'
 import { setFormField, resetForm, setNotification, FormData } from '../store/complaintSlice'
 import { generateComplaintAuditPDF } from './AuditReportExport'
 import { DynamicDateField } from './DynamicDateField'
+import { getApiUrl } from '../config/api'
 
 export const ComplaintForm: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -61,7 +62,7 @@ export const ComplaintForm: React.FC = () => {
         summary: `${formData.product_name} (Batch ${formData.batch_number}) - ${formData.complaint_type}`
       }
 
-      const res = await fetch('/api/complaints', {
+      const res = await fetch(getApiUrl('/api/complaints'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

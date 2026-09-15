@@ -9,6 +9,7 @@ import {
   setExtractionError, setNotification 
 } from '../store/complaintSlice'
 import { addMessage, setIsTyping, ChatMessage } from '../store/copilotSlice'
+import { getApiUrl } from '../config/api'
 
 interface AIIntakeAssistantProps {
   onOpenPasteModal: () => void
@@ -37,7 +38,7 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
 
   useEffect(() => {
     // Fetch preloaded samples from backend
-    fetch('/api/samples')
+    fetch(getApiUrl('/api/samples'))
       .then((res) => res.json())
       .then((data) => setSamples(data))
       .catch((err) => console.log('Samples error:', err))
@@ -65,7 +66,7 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
     }, 700)
 
     try {
-      const res = await fetch('/api/extract/file', {
+      const res = await fetch(getApiUrl('/api/extract/file'), {
         method: 'POST',
         body: form
       })
@@ -107,7 +108,7 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
     }, 500)
 
     try {
-      const res = await fetch('/api/extract/text', {
+      const res = await fetch(getApiUrl('/api/extract/text'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -158,7 +159,7 @@ export const AIIntakeAssistant: React.FC<AIIntakeAssistantProps> = ({ onOpenPast
     dispatch(setIsTyping(true))
 
     try {
-      const res = await fetch('/api/copilot/chat', {
+      const res = await fetch(getApiUrl('/api/copilot/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

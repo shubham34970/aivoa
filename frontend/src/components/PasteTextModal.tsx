@@ -6,6 +6,7 @@ import {
   setExtractionError, setNotification 
 } from '../store/complaintSlice'
 import { addMessage, ChatMessage } from '../store/copilotSlice'
+import { getApiUrl } from '../config/api'
 
 interface PasteTextModalProps {
   isOpen: boolean
@@ -36,7 +37,7 @@ export const PasteTextModal: React.FC<PasteTextModalProps> = ({ isOpen, onClose 
     }, 600)
 
     try {
-      const res = await fetch('/api/extract/text', {
+      const res = await fetch(getApiUrl('/api/extract/text'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

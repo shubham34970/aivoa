@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { useAppDispatch } from '../store'
 import { setNotification } from '../store/complaintSlice'
+import { getApiUrl } from '../config/api'
 
 export const QMSDashboard: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -25,8 +26,8 @@ export const QMSDashboard: React.FC = () => {
       if (search) queryParams.append('search', search)
 
       const [compRes, anaRes] = await Promise.all([
-        fetch(`/api/complaints?${queryParams.toString()}`),
-        fetch('/api/analytics')
+        fetch(getApiUrl(`/api/complaints?${queryParams.toString()}`)),
+        fetch(getApiUrl('/api/analytics'))
       ])
 
       if (compRes.ok) setComplaints(await compRes.json())
@@ -44,7 +45,7 @@ export const QMSDashboard: React.FC = () => {
 
   const handleStatusChange = async (id: number, newStatus: string) => {
     try {
-      const res = await fetch(`/api/complaints/${id}/status?status=${encodeURIComponent(newStatus)}`, {
+      const res = await fetch(getApiUrl(`/api/complaints/${id}/status?status=${encodeURIComponent(newStatus)}`), {
         method: 'PATCH'
       })
       if (res.ok) {
@@ -246,7 +247,7 @@ export const QMSDashboard: React.FC = () => {
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={async () => {
-                          const res = await fetch(`/api/complaints/${c.id}`)
+                          const res = await fetch(getApiUrl(`/api/complaints/${c.id}`))
                           if (res.ok) setSelectedComplaint(await res.json())
                         }}
                         className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 transition-all inline-flex items-center gap-1 text-xs font-semibold"
